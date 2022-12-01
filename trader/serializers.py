@@ -8,9 +8,10 @@ class TraderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Trader
-        fields = ['id', 'user', 'role', 'mobile_number', 'record']
+        fields = ['id', 'user', 'role', 'mobile_number', 'record', 'favourite']
         extra_kwargs = {
-            'record': {'read_only': True}
+            'record': {'read_only': True},
+            'favourite': {'read_only': True}
         }
 
     def create(self, validated_data):

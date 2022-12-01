@@ -18,6 +18,5 @@ class TransactionSerializer(serializers.ModelSerializer):
         request = self.context['request']
         transaction_trader = Trader.objects.get(user_id=request.user.id)
         new_transaction = Transaction.objects.create(**validated_data)
-        transaction_id = new_transaction.id
-        transaction_trader.record.add(transaction_id)
+        transaction_trader.record.add(new_transaction.id)
         return new_transaction
