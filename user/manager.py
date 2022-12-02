@@ -25,8 +25,8 @@ class CustomUserManager(BaseUserManager):
         password = user_data.get('password')
         if role == 'trader':
             extra_fields.setdefault('is_trader', True)
-        elif role == 'employee':
-            extra_fields.setdefault('is_employee', True)
+        elif role == 'manager':
+            extra_fields.setdefault('is_manager', True)
         else:
             raise ValueError("Role is not correct")
         return self._create_user(email, password, first_name, last_name, **extra_fields)

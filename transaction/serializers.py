@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from transaction.models import Transaction
-from trader.models import Trader
+from trader.models import Manager
 from company.serializers import CompanySerializer
 from company.models import Company
 
@@ -16,7 +16,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         request = self.context['request']
-        transaction_trader = Trader.objects.get(user_id=request.user.id)
+        transaction_trader = Manager.objects.get(user_id=request.user.id)
         new_transaction = Transaction.objects.create(**validated_data)
         transaction_trader.record.add(new_transaction.id)
         return new_transaction

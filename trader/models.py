@@ -4,7 +4,7 @@ from transaction.models import Transaction
 from favourite.models import Favourite
 
 
-class Trader(models.Model):
+class Manager(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=10, default='trader')

@@ -11,7 +11,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(max_length=255)
 
     is_trader = models.BooleanField(default=False)
-    is_employee = models.BooleanField(default=False)
+    is_manager = models.BooleanField(default=False)
 
     is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)

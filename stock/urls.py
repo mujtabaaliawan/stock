@@ -11,4 +11,5 @@ urlpatterns = [
     path('', include('trader.urls')),
     path('', include('transaction.urls')),
     path('', include('user.urls')),
+    path('', include('manager.urls')),
 ]
