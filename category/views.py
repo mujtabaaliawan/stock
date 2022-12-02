@@ -5,10 +5,9 @@ from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
 from django.http import JsonResponse
 from company.models import Company
+from favourite.signals import favourite_check
 from price.models import Price
-from favourite.models import Favourite
-from django.core.mail import send_mail
-from trader.models import Trader
+from django.core.signals import request_finished
 
 
 class CategoryList(ListAPIView):
@@ -39,30 +38,6 @@ class EnrollmentUpdate(RetrieveUpdateAPIView):
 class DataUpdater(APIView):
     parser_classes = [JSONParser]
 
-    def favourite_check(self):
-        favourites = Favourite.objects.all()
-        print("Yes i am working")
-        for fav in favourites:
-            field = fav.price_field
-            company_current_price = fav.company.price.objects.get(field)
-            if company_current_price <= fav.minimum_limit:
-                favourite_trader = Trader.objects.get(user_id=fav.trader_user_id)
-                email = favourite_trader.user.email
-                send_mail(
-                    'Market Favourite Company Price Alert',
-                    f'Favourite Company {fav.company} has reached minimum limit, new value is {company_current_price}',
-                    'mujtaba.ali@ignicube.com',
-                    [email],
-                )
-            if company_current_price >= fav.maximum_limit:
-                favourite_trader = Trader.objects.get(user_id=fav.trader_user_id)
-                email = favourite_trader.user.email
-                send_mail(
-                    'Market Favourite Company Price Alert',
-                    f'Favourite Company {fav.company} has reached maximum limit, new value is {company_current_price}',
-                    'mujtaba.ali@ignicube.com',
-                    [email],
-                )
 
     def price_update(self, line_data):
         company_name = line_data['company']
@@ -94,9 +69,8 @@ class DataUpdater(APIView):
         self.create_company(line_data)
 
     def post(self, request):
+        request_finished.connect(favourite_check)
         market_data = request.data
-        data = market_data[0]
-        print(type(data), data['category'])
 
         for companies in market_data:
             market_category = companies['category']
@@ -109,11 +83,4 @@ class DataUpdater(APIView):
                 self.create_category(companies)
             elif not company_exists:
                 self.create_company(companies)
-
-        self.favourite_check()
         return JsonResponse("Data Received", safe=False)
-
-
-
-
-
