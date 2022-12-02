@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,4 +13,6 @@ urlpatterns = [
     path('', include('transaction.urls')),
     path('', include('user.urls')),
     path('', include('manager.urls')),
+    path('token', TokenObtainPairView.as_view(), name='token_new'),
+    path('token-refresh', TokenRefreshView.as_view(), name='token_update'),
 ]
