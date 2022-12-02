@@ -2,7 +2,7 @@ from django.core.signals import request_finished
 from django.dispatch import receiver
 from favourite.models import Favourite
 from django.core.mail import send_mail
-from trader.models import Manager
+from trader.models import Trader
 
 
 @receiver(request_finished)
@@ -26,7 +26,7 @@ def favourite_check(sender, **kwargs):
             company_field_price = fav.company.price.volume
 
         if company_field_price <= fav.minimum_limit:
-            favourite_trader = Manager.objects.get(user_id=fav.trader_user_id)
+            favourite_trader = Trader.objects.get(user_id=fav.trader_user_id)
             email = favourite_trader.user.email
             send_mail(
                 'Market Favourite Company Price Alert',
@@ -35,7 +35,7 @@ def favourite_check(sender, **kwargs):
                 [email],
             )
         if company_field_price >= fav.maximum_limit:
-            favourite_trader = Manager.objects.get(user_id=fav.trader_user_id)
+            favourite_trader = Trader.objects.get(user_id=fav.trader_user_id)
             email = favourite_trader.user.email
             send_mail(
                 'Market Favourite Company Price Alert',

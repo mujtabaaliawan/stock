@@ -1,19 +1,19 @@
-from trader.models import Manager
-from trader.serializers import ManagerSerializer
+from trader.models import Trader
+from trader.serializers import TraderSerializer
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAPIView
 
 
 class TraderList(ListAPIView):
-    queryset = Manager.objects.all()
-    serializer_class = ManagerSerializer
+    queryset = Trader.objects.all()
+    serializer_class = TraderSerializer
 
 
 class TraderCreate(CreateAPIView):
-    queryset = Manager.objects.all()
-    serializer_class = ManagerSerializer
+    queryset = Trader.objects.all()
+    serializer_class = TraderSerializer
 
 
 class TraderUpdate(RetrieveUpdateAPIView):
-    queryset = Manager.objects.all()
-    serializer_class = ManagerSerializer
+    queryset = Trader.objects.all()
+    serializer_class = TraderSerializer
 

@@ -1,14 +1,19 @@
 from rest_framework import serializers
 from transaction.models import Transaction
-from trader.models import Manager
+from trader.models import Trader
 from company.serializers import CompanySerializer
 from company.models import Company
+from category.serializers import CategorySerializer
+from category.models import Category
 
 
 class TransactionSerializer(serializers.ModelSerializer):
     company = CompanySerializer(read_only=True)
     company_id = serializers.PrimaryKeyRelatedField(
         queryset=Company.objects.all(), source='company', write_only=True)
+    category = CategorySerializer(read_only=True)
+    category_id = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(), source='category', write_only=True)
 
     class Meta:
         model = Transaction
@@ -16,7 +21,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         request = self.context['request']
-        transaction_trader = Manager.objects.get(user_id=request.user.id)
+        transaction_trader = Trader.objects.get(user_id=request.user.id)
         new_transaction = Transaction.objects.create(**validated_data)
         transaction_trader.record.add(new_transaction.id)
         return new_transaction
