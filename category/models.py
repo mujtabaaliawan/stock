@@ -6,3 +6,6 @@ class Category(models.Model):
 
     name = models.CharField(max_length=255)
     company = models.ManyToManyField(Company, blank=True)
+
+    class Meta:
+        ordering = ['id']
