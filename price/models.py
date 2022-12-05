@@ -10,3 +10,4 @@ class Price(models.Model):
     current = models.FloatField()
     change = models.FloatField()
     volume = models.FloatField()
+    datetime = models.DateTimeField()

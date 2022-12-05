@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'trader',
     'transaction',
     'favourite',
+    'manager',
 ]
 
 AUTH_USER_MODEL = 'user.User'
@@ -84,14 +85,18 @@ WSGI_APPLICATION = 'stock.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'stock2',
-        'USER': 'mujtaba',
-        'PASSWORD': 'maz',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'stock2',
+    #     'USER': 'mujtaba',
+    #     'PASSWORD': 'maz',
+    #     'HOST': 'localhost',
+    #     'PORT': '5432',
+    # }
 }
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -129,7 +134,6 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -142,15 +146,23 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+L10N = False
+USE_TZ = False
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    )
+    'DATETIME_FORMAT': "%Y-%m-%d %H:%M:%S",
+    'USE_TZ': False,
 }
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': (
+#         'rest_framework.permissions.IsAuthenticated',
+#     ),
+#
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#         'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework.authentication.SessionAuthentication',
+#     )
+# }

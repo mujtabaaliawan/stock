@@ -5,13 +5,12 @@ from price.models import Price
 
 
 class CompanySerializer(serializers.ModelSerializer):
-    price = PriceSerializer(read_only=True)
-    price_id = serializers.PrimaryKeyRelatedField(
-        queryset=Price.objects.all(), source='price', write_only=True)
+    latest_prices = PriceSerializer(read_only=True)
+    latest_prices_id = serializers.PrimaryKeyRelatedField(
+        queryset=Price.objects.all(), source='latest_prices', write_only=True)
 
     class Meta:
         model = Company
-        fields = '__all__'
+        fields = ['id', 'name', 'latest_prices', 'latest_prices_id']
 
 
-        

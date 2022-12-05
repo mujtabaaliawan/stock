@@ -19,17 +19,7 @@ class DataUpdater(APIView):
     parser_classes = [JSONParser]
 
     def price_update(self, line_data):
-        company_name = line_data['company']
-        company = Company.objects.get(name=company_name)
-        company.price.ldcp = line_data['ldcp']
-        company.price.open = line_data['open']
-        company.price.high = line_data['high']
-        company.price.low = line_data['low']
-        company.price.current = line_data['current']
-        company.price.change = line_data['change']
-        company.price.volume = line_data['volume']
 
-    def create_company(self, line_data):
         ldcp = line_data['ldcp']
         open = line_data['open']
         high = line_data['high']
@@ -37,9 +27,29 @@ class DataUpdater(APIView):
         current = line_data['current']
         change = line_data['change']
         volume = line_data['volume']
+        datetime = line_data['date']
         new_price = Price.objects.create(ldcp=ldcp, open=open, high=high, low=low,
-                                         current=current, change=change, volume=volume)
-        new_company = Company.objects.create(name=line_data['company'], price_id=new_price.id)
+                                         current=current, change=change, volume=volume, datetime=datetime)
+        company_name = line_data['company']
+        company = Company.objects.get(name=company_name)
+        company.price.add(new_price.id)
+        company.latest_prices = new_price
+
+    def create_company(self, line_data):
+
+        ldcp = line_data['ldcp']
+        open = line_data['open']
+        high = line_data['high']
+        low = line_data['low']
+        current = line_data['current']
+        change = line_data['change']
+        volume = line_data['volume']
+        datetime = line_data['date']
+        new_price = Price.objects.create(ldcp=ldcp, open=open, high=high, low=low,
+                                         current=current, change=change, volume=volume, datetime=datetime)
+        new_company = Company.objects.create(name=line_data['company'], latest_prices=new_price)
+        new_company.price.add(new_price.id)
+
         market_category = Category.objects.get(name=line_data['category'])
         market_category.company.add(new_company.id)
 
