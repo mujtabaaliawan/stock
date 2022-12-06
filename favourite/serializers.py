@@ -12,7 +12,7 @@ class FavouriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Favourite
-        fields = ['id', 'company', 'price_field', 'minimum_limit', 'maximum_limit', 'company_id', 'trader_user_id']
+        fields = '__all__'
         extra_kwargs = {
             'trader_user_id': {'read_only': True}
         }

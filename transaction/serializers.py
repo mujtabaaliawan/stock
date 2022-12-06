@@ -1,19 +1,14 @@
 from rest_framework import serializers
 from transaction.models import Transaction
 from trader.models import Trader
-from company.serializers import CompanySerializer
-from company.models import Company
-from category.serializers import CategorySerializer
-from category.models import Category
+from price.serializers import PriceSerializer
+from price.models import Price
 
 
 class TransactionSerializer(serializers.ModelSerializer):
-    company = CompanySerializer(read_only=True)
-    company_id = serializers.PrimaryKeyRelatedField(
-        queryset=Company.objects.all(), source='company', write_only=True)
-    category = CategorySerializer(read_only=True)
-    category_id = serializers.PrimaryKeyRelatedField(
-        queryset=Category.objects.all(), source='category', write_only=True)
+    price = PriceSerializer(read_only=True)
+    price_id = serializers.PrimaryKeyRelatedField(
+        queryset=Price.objects.all(), source='price', write_only=True)
 
     class Meta:
         model = Transaction

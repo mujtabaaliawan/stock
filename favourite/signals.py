@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from favourite.models import Favourite
 from django.core.mail import send_mail
 from trader.models import Trader
+from price.models import Price
 
 
 @receiver(request_finished)
@@ -10,20 +11,22 @@ def favourite_check(sender, **kwargs):
     favourites = Favourite.objects.all()
     for fav in favourites:
         field_name = fav.price_field
-        if field_name == 'ldcp':
-            company_field_price = fav.company.price.ldcp
-        elif field_name == 'open':
-            company_field_price = fav.company.price.open
-        elif field_name == 'high':
-            company_field_price = fav.company.price.high
-        elif field_name == 'low':
-            company_field_price = fav.company.price.low
-        elif field_name == 'current':
-            company_field_price = fav.company.price.current
-        elif field_name == 'change':
-            company_field_price = fav.company.price.change
-        elif field_name == 'volume':
-            company_field_price = fav.company.price.volume
+        price = Price.objects.filter(company=fav.company.id).last()
+        match field_name:
+            case "current":
+                company_field_price = price.current
+            case "ldcp":
+                company_field_price = price.ldcp
+            case "open":
+                company_field_price = price.open
+            case "high":
+                company_field_price = price.high
+            case "low":
+                company_field_price = price.low
+            case "change":
+                company_field_price = price.change
+            case "volume":
+                company_field_price = price.volume
 
         if company_field_price <= fav.minimum_limit:
             favourite_trader = Trader.objects.get(user_id=fav.trader_user_id)

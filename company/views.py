@@ -4,7 +4,6 @@ from company.serializers import CompanySerializer
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
-from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from price.models import Price
 
