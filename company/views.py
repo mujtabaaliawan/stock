@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
+from price.models import Price
 
 
 class CompanyList(ListAPIView):
@@ -22,14 +23,11 @@ class GraphLogger(APIView):
         to_datetime_value = request.data['to_datetime']
         to_datetime = datetime.strptime(to_datetime_value, '%Y-%m-%d %H:%M:%S')
         company = Company.objects.get(id=request.data['company_id'])
-        prices_data = dict()
-        i = 1
-        for value in company.price.all():
-            current_datetime = value.datetime
-            if from_datetime < current_datetime < to_datetime:
-                prices_data[i] = model_to_dict(value)
-                i = i+1
-        return JsonResponse(prices_data, safe=False)
+        company_prices = Price.objects.filter(company=company.id, datetime__range=(from_datetime, to_datetime))
+        price_values = list(company_prices.values())
+        return JsonResponse(price_values, safe=False)
+
+
 
 
 

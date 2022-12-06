@@ -1,12 +1,11 @@
 from django.db import models
-from price.models import Price
+from category.models import Category
 
 
 class Company(models.Model):
 
     name = models.CharField(max_length=255)
-    price = models.ManyToManyField(Price, blank=True)
-    latest_prices = models.ForeignKey(Price, on_delete=models.CASCADE, related_name='new_price')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['id']

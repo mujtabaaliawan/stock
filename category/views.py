@@ -28,30 +28,16 @@ class DataUpdater(APIView):
         change = line_data['change']
         volume = line_data['volume']
         datetime = line_data['date']
-        new_price = Price.objects.create(ldcp=ldcp, open=open, high=high, low=low,
-                                         current=current, change=change, volume=volume, datetime=datetime)
         company_name = line_data['company']
         company = Company.objects.get(name=company_name)
-        company.price.add(new_price.id)
-        company.latest_prices = new_price
+        new_price = Price.objects.create(company=company, ldcp=ldcp, open=open, high=high, low=low,
+                                         current=current, change=change, volume=volume, datetime=datetime)
 
     def create_company(self, line_data):
 
-        ldcp = line_data['ldcp']
-        open = line_data['open']
-        high = line_data['high']
-        low = line_data['low']
-        current = line_data['current']
-        change = line_data['change']
-        volume = line_data['volume']
-        datetime = line_data['date']
-        new_price = Price.objects.create(ldcp=ldcp, open=open, high=high, low=low,
-                                         current=current, change=change, volume=volume, datetime=datetime)
-        new_company = Company.objects.create(name=line_data['company'], latest_prices=new_price)
-        new_company.price.add(new_price.id)
-
-        market_category = Category.objects.get(name=line_data['category'])
-        market_category.company.add(new_company.id)
+        category = Category.objects.get(name=line_data['category'])
+        Company.objects.create(name=line_data['company'], category=category)
+        self.price_update(line_data)
 
     def create_category(self, line_data):
         Category.objects.create(name=line_data['category'])
