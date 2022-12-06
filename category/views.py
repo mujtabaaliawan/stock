@@ -8,6 +8,7 @@ from company.models import Company
 from favourite.signals import favourite_check
 from price.models import Price
 from django.core.signals import request_finished
+from .sender_permission import IsSender
 
 
 class CategoryList(ListAPIView):
@@ -17,6 +18,8 @@ class CategoryList(ListAPIView):
 
 class DataUpdater(APIView):
     parser_classes = [JSONParser]
+
+    permission_classes = [IsSender]
 
     def price_update(self, line_data):
 
@@ -30,11 +33,10 @@ class DataUpdater(APIView):
         datetime = line_data['date']
         company_name = line_data['company']
         company = Company.objects.get(name=company_name)
-        new_price = Price.objects.create(company=company, ldcp=ldcp, open=open, high=high, low=low,
-                                         current=current, change=change, volume=volume, datetime=datetime)
+        Price.objects.create(company=company, ldcp=ldcp, open=open, high=high, low=low,
+                             current=current, change=change, volume=volume, datetime=datetime)
 
     def create_company(self, line_data):
-
         category = Category.objects.get(name=line_data['category'])
         Company.objects.create(name=line_data['company'], category=category)
         self.price_update(line_data)
