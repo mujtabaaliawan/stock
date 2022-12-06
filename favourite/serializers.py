@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from favourite.models import Favourite
 from company.serializers import CompanySerializer
+from trader.serializers import TraderSerializer
 from company.models import Company
 from trader.models import Trader
 
@@ -9,17 +10,19 @@ class FavouriteSerializer(serializers.ModelSerializer):
     company = CompanySerializer(read_only=True)
     company_id = serializers.PrimaryKeyRelatedField(
         queryset=Company.objects.all(), source='company', write_only=True)
+    trader = TraderSerializer(read_only=True)
+    trader_id = serializers.PrimaryKeyRelatedField(
+        queryset=Trader.objects.all(), source='trader', write_only=True)
 
     class Meta:
         model = Favourite
         fields = '__all__'
-        extra_kwargs = {
-            'trader_user_id': {'read_only': True}
-        }
 
-    def create(self, validated_data):
+    def validate(self, data):
         request = self.context['request']
-        new_favourite = Favourite.objects.create(trader_user_id=request.user.id, **validated_data)
-        favourite_trader = Trader.objects.get(user_id=request.user.id)
-        favourite_trader.favourite.add(new_favourite.id)
-        return new_favourite
+        trader_id = data.get('trader_id')
+        trader = Trader.objects.get(id=trader_id)
+        if trader.user.id == request.user.id:
+            return data
+        else:
+            raise serializers.ValidationError("Invalid User")

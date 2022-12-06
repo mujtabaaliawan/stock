@@ -1,6 +1,6 @@
 from favourite.models import Favourite
 from favourite.serializers import FavouriteSerializer
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAPIView
 
 
 class FavouriteList(ListAPIView):
@@ -13,6 +13,6 @@ class FavouriteCreate(CreateAPIView):
     serializer_class = FavouriteSerializer
 
 
-class FavouriteUpdate(RetrieveUpdateDestroyAPIView):
+class FavouriteUpdate(RetrieveUpdateAPIView):
     queryset = Favourite.objects.all()
     serializer_class = FavouriteSerializer

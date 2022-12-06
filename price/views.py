@@ -4,7 +4,6 @@ from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from company.models import Company
 from django.http import JsonResponse
-from django.forms.models import model_to_dict
 
 
 class PriceList(ListAPIView):
@@ -15,12 +14,24 @@ class PriceList(ListAPIView):
 class LatestPriceList(APIView):
 
     def get(self, request):
-        market = dict()
+        market = []
         for company in Company.objects.all():
+            company_data = dict()
             price = Price.objects.filter(company=company.id).last()
-            market[company.id] = model_to_dict(price)
-            market[company.id].update({'company_name': company.name})
-            market[company.id].update({'category_id': company.category.id})
-            market[company.id].update({'category_name': company.category.name})
+
+            company_data['category_id'] = company.category.id
+            company_data['category_name'] = company.category.name
+            company_data['company_id'] = company.id
+            company_data['company_name'] = company.name
+            company_data['ldcp'] = price.ldcp
+            company_data['open'] = price.open
+            company_data['high'] = price.high
+            company_data['low'] = price.low
+            company_data['current'] = price.current
+            company_data['change'] = price.change
+            company_data['volume'] = price.volume
+
+            market.append(company_data)
+
         return JsonResponse(market, safe=False)
 
