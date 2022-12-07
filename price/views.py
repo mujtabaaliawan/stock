@@ -1,14 +1,7 @@
 from price.models import Price
-from price.serializers import PriceSerializer
-from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from company.models import Company
 from django.http import JsonResponse
-
-
-class PriceList(ListAPIView):
-    queryset = Price.objects.all()
-    serializer_class = PriceSerializer
 
 
 class LatestPriceList(APIView):
