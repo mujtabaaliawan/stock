@@ -11,10 +11,10 @@ class TraderSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        user = UserSerializer.create(self, validated_data=validated_data)
-        role = validated_data.get('role')
+        user_data = validated_data.get('user')
+        user = UserSerializer.create(self, validated_data=user_data)
         mobile_number = validated_data.get('mobile_number')
-        trader, created = Trader.objects.update_or_create(user=user, role=role, mobile_number=mobile_number)
+        trader, created = Trader.objects.update_or_create(user=user, mobile_number=mobile_number)
         return trader
 
 

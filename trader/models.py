@@ -5,5 +5,4 @@ from django.db import models
 class Trader(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=10, default='trader')
     mobile_number = models.CharField(max_length=20, default='0')

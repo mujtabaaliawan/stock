@@ -8,7 +8,8 @@ from company.models import Company
 from favourite.signals import favourite_check
 from price.models import Price
 from django.core.signals import request_finished
-from .sender_permission import IsSender
+from category.sender_authentication import SenderAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class CategoryList(ListAPIView):
@@ -19,7 +20,8 @@ class CategoryList(ListAPIView):
 class DataUpdater(APIView):
     parser_classes = [JSONParser]
 
-    permission_classes = [IsSender]
+    authentication_classes = [SenderAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def price_update(self, line_data):
 

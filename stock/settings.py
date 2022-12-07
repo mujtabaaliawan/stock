@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,6 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-fq4oy*8chrf9&m7i02!@_srbc1+tk!zozo_87=pniicjxtks3m'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,7 +48,6 @@ INSTALLED_APPS = [
     'trader',
     'transaction',
     'favourite',
-    'manager',
 ]
 
 AUTH_USER_MODEL = 'user.User'

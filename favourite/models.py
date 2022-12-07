@@ -21,3 +21,9 @@ class Favourite(models.Model):
     maximum_limit = models.FloatField()
     is_active = models.BooleanField(default=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['company', 'trader', 'monitor_field', 'is_active'],
+                                    name='unique_favourite')
+        ]
+

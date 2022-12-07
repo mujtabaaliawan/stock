@@ -28,23 +28,15 @@ class GraphLogger(APIView):
         category_name = company.category.name
         company_id = company.id
         company_name = company.name
-        graph_data = []
+        company_data = dict()
+        company_data['category_id'] = category_id
+        company_data['category_name'] = category_name
+        company_data['company_id'] = company_id
+        company_data['company_name'] = company_name
 
-        for obj in company_prices:
-            company_data = dict()
-            company_data['category_id'] = category_id
-            company_data['category_name'] = category_name
-            company_data['company_id'] = company_id
-            company_data['company_name'] = company_name
-            company_data['ldcp'] = obj.ldcp
-            company_data['open'] = obj.open
-            company_data['high'] = obj.high
-            company_data['low'] = obj.low
-            company_data['current'] = obj.current
-            company_data['change'] = obj.change
-            company_data['volume'] = obj.volume
+        price_data = list(company_prices.values())
 
-            graph_data.append(company_data)
+        graph_data = [company_data, price_data]
 
         return JsonResponse(graph_data, safe=False)
 

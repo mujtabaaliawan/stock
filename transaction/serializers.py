@@ -31,22 +31,20 @@ class TransactionSerializer(serializers.ModelSerializer):
         volume_current = price_data.volume
         nature = data.get('nature')
 
-        if all( [trader_validate, nature == 'purchase', volume_transacted <= volume_current] ):
+        if all([trader_validate, nature == 'purchase', volume_transacted <= volume_current]):
             return data
 
         elif all([trader_validate, nature == 'sale']):
 
-            transactions_data = Transaction.objects.filter(trader=trader_id, company=company_id,
-                                                           nature='purchase')
-            volume_available = 0
+            transactions_data = Transaction.objects.filter(trader=trader_id, company=company_id)
+            volume_available = 0.0
             for transaction in transactions_data:
-                volume_available = volume_available + transaction.volume_transacted
+                if transaction.nature == "purchase":
+                    volume_available = volume_available + transaction.volume_transacted
+                else:
+                    volume_available = volume_available - transaction.volume_transacted
 
             if volume_transacted <= volume_available:
                 return data
 
         raise serializers.ValidationError("Invalid Transaction")
-
-
-
-

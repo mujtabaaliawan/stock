@@ -9,9 +9,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
-
-    is_trader = models.BooleanField(default=False)
-    is_manager = models.BooleanField(default=False)
+    role_choices = (
+        ("superuser", "superuser"),
+        ("trader", "trader"),
+        ("client", "client")
+    )
+    role = models.CharField(max_length=10, choices=role_choices)
 
     is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
