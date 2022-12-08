@@ -22,7 +22,7 @@ class GraphLogger(APIView):
         to_datetime_value = request.data['to_datetime']
         to_datetime = datetime.strptime(to_datetime_value, '%Y-%m-%d %H:%M:%S')
         company = Company.objects.get(id=request.data['company_id'])
-        company_prices = Price.objects.filter(company=company.id, datetime__range=(from_datetime, to_datetime))
+        company_prices = Price.objects.filter(company=company.id, date_time__range=(from_datetime, to_datetime))
 
         category_id = company.category.id
         category_name = company.category.name

@@ -16,6 +16,7 @@ class LatestPriceList(APIView):
             company_data['category_name'] = company.category.name
             company_data['company_id'] = company.id
             company_data['company_name'] = company.name
+            company_data['price_id'] = price.id
             company_data['ldcp'] = price.ldcp
             company_data['open'] = price.open
             company_data['high'] = price.high
@@ -23,6 +24,7 @@ class LatestPriceList(APIView):
             company_data['current'] = price.current
             company_data['change'] = price.change
             company_data['volume'] = price.volume
+            company_data['date_time'] = price.date_time
 
             market.append(company_data)
 

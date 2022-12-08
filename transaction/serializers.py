@@ -20,14 +20,11 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         request = self.context['request']
-        trader_id = data.get('trader_id')
-        trader = Trader.objects.get(id=trader_id)
+        trader = data.get('trader')
         trader_validate = trader.user.id == request.user.id
-
         volume_transacted = data.get('volume_transacted')
-        price_id = data.get('price')
-        price_data = Price.objects.get(id=price_id)
-        company_id = price_data.company.id
+        price_data = data.get('price')
+        company= price_data.company
         volume_current = price_data.volume
         nature = data.get('nature')
 
@@ -36,7 +33,8 @@ class TransactionSerializer(serializers.ModelSerializer):
 
         elif all([trader_validate, nature == 'sale']):
 
-            transactions_data = Transaction.objects.filter(trader=trader_id, company=company_id)
+            transactions_data = Transaction.objects.filter(trader=trader, price__company=company)
+
             volume_available = 0.0
             for transaction in transactions_data:
                 if transaction.nature == "purchase":

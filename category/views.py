@@ -32,11 +32,11 @@ class DataUpdater(APIView):
         current = line_data['current']
         change = line_data['change']
         volume = line_data['volume']
-        datetime = line_data['date']
+        date_time = line_data['date_time']
         company_name = line_data['company']
         company = Company.objects.get(name=company_name)
         Price.objects.create(company=company, ldcp=ldcp, open=open, high=high, low=low,
-                             current=current, change=change, volume=volume, datetime=datetime)
+                             current=current, change=change, volume=volume, date_time=date_time)
 
     def create_company(self, line_data):
         category = Category.objects.get(name=line_data['category'])
