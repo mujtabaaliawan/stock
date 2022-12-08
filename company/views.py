@@ -9,14 +9,17 @@ from price.models import Price
 
 
 class CompanyList(ListAPIView):
+    
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
 
 class GraphLogger(APIView):
+
     parser_classes = [JSONParser]
 
     def post(self, request):
+
         from_datetime_value = request.data['from_datetime']
         from_datetime = datetime.strptime(from_datetime_value, '%Y-%m-%d %H:%M:%S')
         to_datetime_value = request.data['to_datetime']
@@ -35,7 +38,6 @@ class GraphLogger(APIView):
         company_data['company_name'] = company_name
 
         price_data = list(company_prices.values())
-
         graph_data = [company_data, price_data]
 
         return JsonResponse(graph_data, safe=False)
