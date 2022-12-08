@@ -1,9 +1,3 @@
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-secret_key = str(os.getenv('TOKEN_KEY'))
-
 
 token1 = {
     "market": "stock",
