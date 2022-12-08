@@ -17,12 +17,3 @@ class FavouriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favourite
         fields = '__all__'
-
-    def validate(self, data):
-        request = self.context['request']
-        trader_id = data.get('trader_id')
-        trader = Trader.objects.get(id=trader_id)
-        if trader.user.id == request.user.id:
-            return data
-        else:
-            raise serializers.ValidationError("Invalid User")

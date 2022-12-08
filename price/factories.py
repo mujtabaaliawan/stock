@@ -10,6 +10,7 @@ class UserFactory(DjangoModelFactory):
         model = User
 
     first_name = 'Trader'
+    last_name = 'family'
     email = 'trader@gmail.com'
     password = make_password('trader')
     role = 'trader'
@@ -22,6 +23,6 @@ class TraderFactory(DjangoModelFactory):
         model = Trader
 
     mobile_number = '0312121212'
-    user = factory.SubFactory('trader.factories.UserFactory', first_name='Trader',
+    user = factory.SubFactory('trader.factories.UserFactory', first_name='Trader', last_name='family',
                               email='trader@gmail.com', password=make_password('trader'),
                               role="trader")

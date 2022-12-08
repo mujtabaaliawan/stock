@@ -4,12 +4,14 @@ from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from trader.models import Trader
 from django.http import JsonResponse
-from favourite.trader_permission import IsTrader
+from favourite.trader_permission import IsTrader, IsTraderHimself
 
 
 class FavouriteCreate(CreateAPIView):
     queryset = Favourite.objects.all()
     serializer_class = FavouriteSerializer
+
+    permission_classes = [IsTraderHimself]
 
 
 class FavouriteUpdate(RetrieveUpdateAPIView):
