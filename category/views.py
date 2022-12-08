@@ -18,8 +18,8 @@ class CategoryList(ListAPIView):
 
 
 class DataUpdater(APIView):
-    parser_classes = [JSONParser]
 
+    parser_classes = [JSONParser]
     authentication_classes = [SenderAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -48,18 +48,20 @@ class DataUpdater(APIView):
         self.create_company(line_data)
 
     def post(self, request):
+
         request_finished.connect(favourite_check)
 
-        market_data = request.data
-        for companies in market_data:
+        for companies in request.data:
             market_category = companies['category']
             market_company = companies['company']
             category_exists = Category.objects.filter(name=market_category).exists()
             company_exists = Company.objects.filter(name=market_company).exists()
+
             if company_exists:
                 self.price_update(companies)
             elif not category_exists:
                 self.create_category(companies)
             elif not company_exists:
                 self.create_company(companies)
+
         return JsonResponse("Data Received", safe=False)
