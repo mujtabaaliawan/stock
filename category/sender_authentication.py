@@ -12,6 +12,7 @@ class SenderAuthentication(BaseAuthentication):
     def authenticate(self, request):
 
         user_ip = request.META['REMOTE_ADDR']
+
         for ip in allowed_ips:
             safe_ip = ip.replace("$", '0').replace('£', '2').replace('r', '1')
 
