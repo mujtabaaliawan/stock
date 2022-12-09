@@ -9,7 +9,7 @@ from price.models import Price
 
 
 class CompanyList(ListAPIView):
-    
+
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
