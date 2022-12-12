@@ -7,7 +7,7 @@ class Favourite(models.Model):
 
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='favourite_company')
     trader = models.ForeignKey(Trader, on_delete=models.CASCADE, related_name='favourite_trader')
-    field_choices = (
+    monitor_field_choices = [
         ("ldcp", "ldcp"),
         ("open", "open"),
         ("high", "high"),
@@ -15,8 +15,8 @@ class Favourite(models.Model):
         ("current", "current"),
         ("change", "change"),
         ("volume", "volume")
-    )
-    monitor_field = models.CharField(max_length=10, choices=field_choices, default="current")
+    ]
+    monitor_field = models.CharField(max_length=10, choices=monitor_field_choices, default="current")
     minimum_limit = models.FloatField()
     maximum_limit = models.FloatField()
     is_active = models.BooleanField(default=True)
