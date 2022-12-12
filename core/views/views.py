@@ -20,7 +20,7 @@ class DataUpdater(APIView):
     def post(self, request):
 
         request_finished.connect(favourite_check)
-        Price.objects.all().update(is_latest=False)
+        Price.objects.filter(is_latest=True).update(is_latest=False)
         for companies in request.data:
 
             category, created = Category.objects.get_or_create(name=companies['category'])
