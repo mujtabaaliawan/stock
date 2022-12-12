@@ -11,8 +11,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(max_length=255)
     role_choices = [
         ("superuser", "superuser"),
-        ("trader", "trader"),
-        ("client", "client")
+        ("trader", "trader")
     ]
     role = models.CharField(max_length=10, choices=role_choices)
 

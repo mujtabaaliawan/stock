@@ -12,4 +12,12 @@ class Price(models.Model):
     change = models.FloatField()
     volume = models.IntegerField()
     date_time = models.DateTimeField()
+    is_latest = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['company_id']
+        constraints = [
+            models.UniqueConstraint(fields=['company', 'is_latest'],
+                                    name='unique_price')
+        ]
 

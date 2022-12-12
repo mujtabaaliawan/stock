@@ -8,6 +8,7 @@ from price.serializers import PriceSerializer
 from django.core.signals import request_finished
 from core.authentications.sender_authentication import SenderAuthentication
 from rest_framework.permissions import IsAuthenticated
+from price.models import Price
 
 
 class DataUpdater(APIView):
@@ -19,14 +20,15 @@ class DataUpdater(APIView):
     def post(self, request):
 
         request_finished.connect(favourite_check)
-
+        Price.objects.all().update(is_latest=False)
         for companies in request.data:
 
             category, created = Category.objects.get_or_create(name=companies['category'])
             company, created = Company.objects.get_or_create(name=companies['company'],
-                                                             category_id=category.id)
+                                                             defaults={'category_id': category.id})
             companies['company_id'] = company.id
             companies['category_id'] = category.id
+            companies['is_latest'] = True
 
             serializer = PriceSerializer(data=companies)
             serializer.is_valid()
