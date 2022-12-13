@@ -30,7 +30,7 @@ class TestTrader(APITestCase):
             },
             "mobile_number": "03004567823"
         }
-        path = reverse('trader_new')
+        path = reverse('trader_list_new')
 
         self.trader = TraderFactory.create()
         self.user_login(email=self.trader.user.email, password='trader')
@@ -44,7 +44,7 @@ class TestTrader(APITestCase):
         }
         self.trader = TraderFactory.create()
 
-        path = reverse('trader_list')
+        path = reverse('trader_list_new')
         self.user_login(email=self.trader.user.email, password='trader')
         response = self.client.get(path)
         self.assertEqual(response.data[0].get('mobile_number'), self.trader.mobile_number)
@@ -57,7 +57,7 @@ class TestTrader(APITestCase):
 
     def test_get_trader_list(self):
 
-        path = reverse('trader_list')
+        path = reverse('trader_list_new')
 
         self.trader = TraderFactory.create()
         self.user_login(email=self.trader.user.email, password='trader')

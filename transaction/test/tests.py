@@ -44,7 +44,7 @@ class TestTransaction(APITestCase):
         response = self.client.get(path)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         market_data = json.loads(response.content)
-        price_id = market_data["1"]["price_id"]
+        price_id = market_data[0]["id"]
 
         test_data = {
             "nature": "purchase",
@@ -53,7 +53,7 @@ class TestTransaction(APITestCase):
             "trader_id": self.trader.id
         }
 
-        path = reverse("transaction_new")
+        path = reverse("transaction_list_new")
 
         self.user_login(email=self.trader.user.email, password='trader')
         response = self.client.post(path, json.dumps(test_data), content_type='application/json')
@@ -65,8 +65,6 @@ class TestTransaction(APITestCase):
             "price_id": price_id,
             "trader_id": self.trader.id
         }
-
-        path = reverse("transaction_new")
 
         self.user_login(email=self.trader.user.email, password='trader')
         response = self.client.post(path, json.dumps(test_data), content_type='application/json')
@@ -79,8 +77,6 @@ class TestTransaction(APITestCase):
             "trader_id": self.trader.id
         }
 
-        path = reverse("transaction_new")
-
         self.user_login(email=self.trader.user.email, password='trader')
         response = self.client.post(path, json.dumps(test_data), content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -92,8 +88,6 @@ class TestTransaction(APITestCase):
             "trader_id": self.trader.id
         }
 
-        path = reverse("transaction_new")
-
         self.user_login(email=self.trader.user.email, password='trader')
         response = self.client.post(path, json.dumps(test_data), content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -104,8 +98,6 @@ class TestTransaction(APITestCase):
             "price_id": price_id,
             "trader_id": self.trader.id
         }
-
-        path = reverse("transaction_new")
 
         self.user_login(email=self.trader.user.email, password='trader')
         response = self.client.post(path, json.dumps(test_data), content_type='application/json')

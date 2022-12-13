@@ -25,10 +25,10 @@ class TestUser(APITestCase):
             "first_name": "John",
             "last_name": "Smith",
             "password": "john",
-            "role": "client",
+            "role": "trader",
         }
 
-        path = reverse('user_new')
+        path = reverse('user_list_new')
 
         self.user = UserFactory.create()
         self.user_login(email=self.user.email, password='user')
@@ -36,7 +36,7 @@ class TestUser(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_user_list(self):
-        path = reverse('user_list')
+        path = reverse('user_list_new')
 
         self.user = UserFactory.create()
         self.user_login(email=self.user.email, password='user')
@@ -56,7 +56,7 @@ class TestUser(APITestCase):
         }
         self.user = UserFactory.create()
 
-        path = reverse('user_list')
+        path = reverse('user_list_new')
         self.user_login(email=self.user.email, password='user')
         response = self.client.get(path)
         self.assertEqual(response.data[0].get('first_name'), self.user.first_name)
