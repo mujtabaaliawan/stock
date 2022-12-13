@@ -12,21 +12,7 @@ def favourite_check(sender, **kwargs):
         field_name = fav.monitor_field
         email = fav.trader.user.email
         price = Price.objects.filter(company=fav.company_id, is_latest=True)
-        match field_name:
-            case "current":
-                company_field_price = price.current
-            case "ldcp":
-                company_field_price = price.ldcp
-            case "open":
-                company_field_price = price.open
-            case "high":
-                company_field_price = price.high
-            case "low":
-                company_field_price = price.low
-            case "change":
-                company_field_price = price.change
-            case "volume":
-                company_field_price = price.volume
+        company_field_price = getattr(price, field_name)
 
         if company_field_price <= fav.minimum_limit:
             send_mail(

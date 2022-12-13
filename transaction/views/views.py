@@ -10,5 +10,3 @@ class TransactionCreate(ListCreateAPIView):
         current_user_id = self.request.user.id
         return Transaction.objects.filter(trader__user_id=current_user_id)
 
-
-
