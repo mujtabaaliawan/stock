@@ -21,16 +21,16 @@ class DataUpdater(APIView):
 
         request_finished.connect(favourite_check)
         Price.objects.filter(is_latest=True).update(is_latest=False)
-        for companies in request.data:
+        for company_data in request.data:
 
-            category, created = Category.objects.get_or_create(name=companies['category'])
-            company, created = Company.objects.get_or_create(name=companies['company'],
+            category, created = Category.objects.get_or_create(name=company_data['category'])
+            company, created = Company.objects.get_or_create(name=company_data['company'],
                                                              defaults={'category_id': category.id})
-            companies['company_id'] = company.id
-            companies['category_id'] = category.id
-            companies['is_latest'] = True
+            company_data['company_id'] = company.id
+            company_data['category_id'] = category.id
+            company_data['is_latest'] = True
 
-            serializer = PriceSerializer(data=companies)
+            serializer = PriceSerializer(data=company_data)
             serializer.is_valid()
             serializer.save()
 

@@ -1,26 +1,14 @@
 from transaction.models import Transaction
 from transaction.serializers import TransactionSerializer
-from rest_framework.generics import CreateAPIView
-from rest_framework.views import APIView
-from trader.models import Trader
-from django.http import JsonResponse
-from transaction.permissions.trader_permission import IsTrader
+from rest_framework.generics import ListCreateAPIView
 
 
-class TransactionCreate(CreateAPIView):
-    queryset = Transaction.objects.all()
+class TransactionCreate(ListCreateAPIView):
     serializer_class = TransactionSerializer
 
+    def get_queryset(self):
+        current_user_id = self.request.user.id
+        return Transaction.objects.filter(trader__user_id=current_user_id)
 
-class TransactionList(APIView):
-
-    permission_classes = [IsTrader]
-
-    def get(self, request):
-
-        trader = Trader.objects.get(user_id=request.user.id)
-        transactions = Transaction.objects.filter(trader=trader.id)
-        transaction_values = list(transactions.values())
-        return JsonResponse(transaction_values, safe=False)
 
 
