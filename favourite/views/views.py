@@ -3,7 +3,7 @@ from favourite.serializers import FavouriteSerializer
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
 
 
-class FavouriteCreate(ListCreateAPIView):
+class FavouriteListCreate(ListCreateAPIView):
 
     serializer_class = FavouriteSerializer
 

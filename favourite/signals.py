@@ -12,7 +12,7 @@ def favourite_check(sender, **kwargs):
         field_name = fav.monitor_field
         email = fav.trader.user.email
         price = Price.objects.filter(company=fav.company_id, is_latest=True)
-        company_field_price = getattr(price, field_name)
+        company_field_price = getattr(price[0], field_name)
 
         if company_field_price <= fav.minimum_limit:
             send_mail(

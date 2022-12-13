@@ -46,7 +46,7 @@ class TestFavourite(APITestCase):
         response = self.client.get(path)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         market_data = json.loads(response.content)
-        company_id = market_data["1"]["company_id"]
+        company_id = market_data[0]["company"]["id"]
 
         test_data = {
             "company_id": company_id,
@@ -57,7 +57,7 @@ class TestFavourite(APITestCase):
             "is_active": True
         }
 
-        path = reverse("favourite_new")
+        path = reverse("favourite_list_new")
         self.user_login(email=self.trader.user.email, password='trader')
         response = self.client.post(path, json.dumps(test_data), content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -71,7 +71,7 @@ class TestFavourite(APITestCase):
         response = self.client.get(path)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         market_data = json.loads(response.content)
-        company_id = market_data["1"]["company_id"]
+        company_id = market_data[0]["company"]["id"]
 
         test_data = {
             "company_id": company_id,
@@ -82,20 +82,19 @@ class TestFavourite(APITestCase):
             "is_active": True
         }
 
-        path = reverse("favourite_new")
+        path = reverse("favourite_list_new")
         self.user_login(email=self.trader.user.email, password='trader')
         response = self.client.post(path, json.dumps(test_data), content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        path = reverse("favourite_list")
         self.user_login(email=self.trader.user.email, password='trader')
         response = self.client.get(path)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         fav_data = json.loads(response.content)
 
-        self.assertEqual(fav_data[0]["company_id"], test_data["company_id"])
-        self.assertEqual(fav_data[0]["trader_id"], test_data["trader_id"])
+        self.assertEqual(fav_data[0]["company"]["id"], test_data["company_id"])
+        self.assertEqual(fav_data[0]["trader"]["id"], test_data["trader_id"])
         self.assertEqual(fav_data[0]["monitor_field"], test_data["monitor_field"])
         self.assertEqual(fav_data[0]["minimum_limit"], test_data["minimum_limit"])
         self.assertEqual(fav_data[0]["maximum_limit"], test_data["maximum_limit"])
@@ -110,7 +109,7 @@ class TestFavourite(APITestCase):
         response = self.client.get(path)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         market_data = json.loads(response.content)
-        company_id = market_data["1"]["company_id"]
+        company_id = market_data[0]["company"]["id"]
 
         test_data = {
             "company_id": company_id,
@@ -121,12 +120,11 @@ class TestFavourite(APITestCase):
             "is_active": True
         }
 
-        path = reverse("favourite_new")
+        path = reverse("favourite_list_new")
         self.user_login(email=self.trader.user.email, password='trader')
         response = self.client.post(path, json.dumps(test_data), content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        path = reverse("favourite_list")
         self.user_login(email=self.trader.user.email, password='trader')
         response = self.client.get(path)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

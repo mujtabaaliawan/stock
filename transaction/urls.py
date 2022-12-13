@@ -3,6 +3,5 @@ from transaction.views import views
 
 
 urlpatterns = [
-    path('transaction', views.TransactionList.as_view(), name='transaction_list'),
-    path('transaction/new', views.TransactionCreate.as_view(), name='transaction_new'),
+    path('transaction', views.TransactionListCreate.as_view(), name='transaction_list_new'),
 ]

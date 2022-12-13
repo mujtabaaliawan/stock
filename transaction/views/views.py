@@ -3,7 +3,7 @@ from transaction.serializers import TransactionSerializer
 from rest_framework.generics import ListCreateAPIView
 
 
-class TransactionCreate(ListCreateAPIView):
+class TransactionListCreate(ListCreateAPIView):
     serializer_class = TransactionSerializer
 
     def get_queryset(self):
