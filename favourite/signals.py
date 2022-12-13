@@ -11,7 +11,7 @@ def favourite_check(sender, **kwargs):
     for fav in favourites:
         field_name = fav.monitor_field
         email = fav.trader.user.email
-        price = Price.objects.filter(company=fav.company.id).last()
+        price = Price.objects.filter(company=fav.company_id, is_latest=True)
         match field_name:
             case "current":
                 company_field_price = price.current
