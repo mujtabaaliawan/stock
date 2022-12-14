@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'stock.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'market3',
+        'NAME': 'market4',
         'USER': 'mujtaba',
         'PASSWORD': 'maz',
         'HOST': 'localhost',
