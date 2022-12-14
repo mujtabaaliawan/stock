@@ -9,7 +9,7 @@ urlpatterns = [
     path('token-refresh', TokenRefreshView.as_view(), name='token_update'),
     path('', include('category.urls')),
     path('', include('company.urls')),
-    path('', include('price.urls')),
+    path('', include('stock_detail.urls')),
     path('', include('favourite.urls')),
     path('', include('trader.urls')),
     path('', include('transaction.urls')),

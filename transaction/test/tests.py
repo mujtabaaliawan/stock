@@ -44,12 +44,12 @@ class TestTransaction(APITestCase):
         response = self.client.get(path)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         market_data = json.loads(response.content)
-        price_id = market_data[0]["id"]
+        stock_detail_id = market_data[0]["id"]
 
         test_data = {
             "nature": "purchase",
-            "volume_transacted": 100.0,
-            "price_id": price_id,
+            "volume_transacted": 100,
+            "stock_detail_id": stock_detail_id,
             "trader_id": self.trader.id
         }
 
@@ -62,7 +62,7 @@ class TestTransaction(APITestCase):
         test_data = {
             "nature": "purchase",
             "volume_transacted": 100.0,
-            "price_id": price_id,
+            "stock_detail_id": stock_detail_id,
             "trader_id": self.trader.id
         }
 
@@ -72,8 +72,8 @@ class TestTransaction(APITestCase):
 
         test_data = {
             "nature": "sale",
-            "volume_transacted": 50.0,
-            "price_id": price_id,
+            "volume_transacted": 50,
+            "stock_detail_id": stock_detail_id,
             "trader_id": self.trader.id
         }
 
@@ -83,8 +83,8 @@ class TestTransaction(APITestCase):
 
         test_data = {
             "nature": "sale",
-            "volume_transacted": 200.0,
-            "price_id": price_id,
+            "volume_transacted": 200,
+            "stock_detail_id": stock_detail_id,
             "trader_id": self.trader.id
         }
 
@@ -94,8 +94,8 @@ class TestTransaction(APITestCase):
 
         test_data = {
             "nature": "sale",
-            "volume_transacted": 150.0,
-            "price_id": price_id,
+            "volume_transacted": 150,
+            "stock_detail_id": stock_detail_id,
             "trader_id": self.trader.id
         }
 

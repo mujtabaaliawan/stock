@@ -2,14 +2,14 @@ from rest_framework import serializers
 from transaction.models import Transaction
 from trader.models import Trader
 from trader.serializers import TraderSerializer
-from price.serializers import PriceSerializer
-from price.models import Price
+from stock_detail.serializers import StockDetailSerializer
+from stock_detail.models import StockDetail
 
 
 class TransactionSerializer(serializers.ModelSerializer):
-    price = PriceSerializer(read_only=True)
-    price_id = serializers.PrimaryKeyRelatedField(
-        queryset=Price.objects.all(), source='price', write_only=True)
+    stock_detail = StockDetailSerializer(read_only=True)
+    stock_detail_id = serializers.PrimaryKeyRelatedField(
+        queryset=StockDetail.objects.all(), source='stock_detail', write_only=True)
     trader = TraderSerializer(read_only=True)
     trader_id = serializers.PrimaryKeyRelatedField(
         queryset=Trader.objects.all(), source='trader', write_only=True)
@@ -23,9 +23,10 @@ class TransactionSerializer(serializers.ModelSerializer):
         trader = data.get('trader')
         trader_validate = trader.user.id == request.user.id
         volume_transacted = data.get('volume_transacted')
-        price_data = data.get('price')
-        company= price_data.company
-        volume_current = price_data.volume
+        stock_data = data.get('stock_detail')
+        company = stock_data.company
+        volume_current = stock_data.volume
+
         nature = data.get('nature')
 
         if all([trader_validate, nature == 'purchase', volume_transacted <= volume_current]):
@@ -33,9 +34,9 @@ class TransactionSerializer(serializers.ModelSerializer):
 
         elif all([trader_validate, nature == 'sale']):
 
-            transactions_data = Transaction.objects.filter(trader=trader, price__company=company)
+            transactions_data = Transaction.objects.filter(trader=trader, stock_detail__company=company)
 
-            volume_available = 0.0
+            volume_available = 0
             for transaction in transactions_data:
                 if transaction.nature == "purchase":
                     volume_available = volume_available + transaction.volume_transacted

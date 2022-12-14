@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'category',
     'company',
-    'price',
+    'stock_detail',
     'user',
     'trader',
     'transaction',
@@ -99,6 +99,9 @@ DATABASES = {
         'PASSWORD': 'maz',
         'HOST': 'localhost',
         'PORT': '5432',
+        'TEST': {
+            'NAME': 'test_market',
+        }
     }
 }
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

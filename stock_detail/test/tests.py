@@ -1,12 +1,12 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.urls import reverse
-from price.test.factories import TraderFactory
+from stock_detail.test.factories import TraderFactory
 import json
 from rest_framework.test import RequestsClient
 
 
-class TestPrice(APITestCase):
+class TestStockDetail(APITestCase):
 
     def user_login(self, email, password):
         token_data = {

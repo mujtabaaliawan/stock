@@ -1,11 +1,14 @@
 from favourite.models import Favourite
 from favourite.serializers import FavouriteSerializer
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
+from favourite.permissions.trader_permission import IsTraderCreate, IsTraderUpdate
 
 
 class FavouriteListCreate(ListCreateAPIView):
 
     serializer_class = FavouriteSerializer
+
+    permission_classes = [IsTraderCreate]
 
     def get_queryset(self):
         current_user_id = self.request.user.id
@@ -15,3 +18,5 @@ class FavouriteListCreate(ListCreateAPIView):
 class FavouriteUpdate(RetrieveUpdateAPIView):
     queryset = Favourite.objects.all()
     serializer_class = FavouriteSerializer
+
+    permission_classes = [IsTraderUpdate]

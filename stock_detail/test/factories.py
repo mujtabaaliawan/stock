@@ -23,6 +23,6 @@ class TraderFactory(DjangoModelFactory):
         model = Trader
 
     mobile_number = '0312121212'
-    user = factory.SubFactory('price.test.factories.UserFactory', first_name='Trader', last_name='family',
+    user = factory.SubFactory('stock_detail.test.factories.UserFactory', first_name='Trader', last_name='family',
                               email='trader@gmail.com', password=make_password('trader'),
                               role="trader")
