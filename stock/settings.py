@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'transaction',
     'favourite',
     'django_filters',
+    'django_q',
 ]
 
 AUTH_USER_MODEL = 'user.User'

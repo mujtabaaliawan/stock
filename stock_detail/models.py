@@ -16,8 +16,4 @@ class StockDetail(models.Model):
 
     class Meta:
         ordering = ['company_id']
-        constraints = [
-            models.UniqueConstraint(fields=['company', 'is_latest'],
-                                    name='unique_price')
-        ]
 

@@ -1,12 +1,9 @@
-from django.core.signals import request_finished
-from django.dispatch import receiver
 from favourite.models import Favourite
 from django.core.mail import send_mail
 from stock_detail.models import StockDetail
 
 
-@receiver(request_finished)
-def favourite_check(sender,**kwargs):
+def mail_favourite():
     favourites = Favourite.objects.filter(is_active=True)
     for fav in favourites:
         field_name = fav.monitor_field
