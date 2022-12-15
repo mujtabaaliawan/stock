@@ -11,8 +11,8 @@ class Transaction(models.Model):
     nature = models.CharField(max_length=10, choices=nature_choices, default="purchase")
     date_time = models.DateTimeField(auto_now_add=True)
     volume_transacted = models.IntegerField()
-    stock_detail = models.ForeignKey(StockDetail, on_delete=models.CASCADE, related_name='transaction_stock')
-    trader = models.ForeignKey(Trader, on_delete=models.CASCADE, related_name='transaction_trader')
+    stock_detail = models.ForeignKey(StockDetail, on_delete=models.CASCADE, related_name='trans_stock')
+    trader = models.ForeignKey(Trader, on_delete=models.CASCADE, related_name='trans_trader', blank=True)
 
 
 

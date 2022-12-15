@@ -18,45 +18,25 @@ environ.Env.read_env()
 
 TOKEN_KEY = env('TOKEN_KEY')
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = []
 
-
-# Application definition
-
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'category',
-    'company',
-    'stock_detail',
-    'user',
-    'trader',
-    'transaction',
-    'favourite',
-    'django_filters',
-    'django_q',
-]
+    'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
+    'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles', 'rest_framework',
+    'category', 'company', 'stock_detail', 'user', 'trader', 'transaction', 'favourite', 'django_filters',
+    'django_q', ]
 
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = env('USER_MODEL')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -68,7 +48,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'stock.urls'
+ROOT_URLCONF = env('URL_CONF')
 
 TEMPLATES = [
     {
@@ -86,35 +66,21 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'stock.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+WSGI_APPLICATION = env('WSGI_APPLICATION')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'market4',
-        'USER': 'mujtaba',
-        'PASSWORD': 'maz',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': env('DATABASE_ENGINE'),
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'HOST': env('DATABASE_HOST'),
+        'PORT': env('DATABASE_PORT'),
         'TEST': {
-            'NAME': 'test_market',
+            'NAME': env('DATABASE_TEST_NAME'),
         }
     }
 }
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = env('EMAIL_PORT')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -131,25 +97,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LANGUAGE_CODE = env('LANGUAGE_CODE')
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+TIME_ZONE = env('TIME_ZONE')
 
 USE_I18N = True
 
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
 STATIC_URL = 'static/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -157,18 +112,26 @@ DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 L10N = False
 USE_TZ = False
 
+ALLOWED_IPS = (env('IP1'), env('IP2'))
+ALLOWED_TOKENS = ({"market": env("TOKEN_MARKET"), "name": env("TOKEN_NAME1"), "city": env("TOKEN_CITY"),
+                   "iat": int(env("TOKEN_IAT"))}, {"market": env("TOKEN_MARKET"), "name": env("TOKEN_NAME2"),
+                    "city": env("TOKEN_CITY"), "iat": int(env("TOKEN_IAT"))})
+
 REST_FRAMEWORK = {
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
+    #
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
+    #     'rest_framework.authentication.BasicAuthentication',
+    # ),
     'DATETIME_FORMAT': "%Y-%m-%d %H:%M:%S",
     'USE_TZ': False,
 }
-
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated',
-#     ),
-#
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#         'rest_framework.authentication.BasicAuthentication',
-#     )
-# }
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_API_KEY')
+EMAIL_PORT=env('EMAIL_PORT')
+EMAIL_USE_TLS = True

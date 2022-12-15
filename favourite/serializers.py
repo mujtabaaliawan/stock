@@ -11,9 +11,12 @@ class FavouriteSerializer(serializers.ModelSerializer):
     company_id = serializers.PrimaryKeyRelatedField(
         queryset=Company.objects.all(), source='company', write_only=True)
     trader = TraderSerializer(read_only=True)
-    trader_id = serializers.PrimaryKeyRelatedField(
-        queryset=Trader.objects.all(), source='trader', write_only=True)
 
     class Meta:
         model = Favourite
         fields = '__all__'
+
+    def create(self, validated_data):
+        request = self.context['request']
+        validated_data['trader'] = Trader.objects.get(user_id=request.user.id)
+        return super().create(validated_data)

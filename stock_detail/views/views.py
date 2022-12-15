@@ -1,5 +1,6 @@
 from stock_detail.models import StockDetail
-from stock_detail.serializers import PriceFilter, StockDetailSerializer
+from stock_detail.serializers import StockDetailSerializer
+from stock_detail.filters import PriceFilter
 from rest_framework.generics import ListAPIView
 from django_filters import rest_framework as filters
 

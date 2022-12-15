@@ -2,7 +2,6 @@ from rest_framework import serializers
 from stock_detail.models import StockDetail
 from company.serializers import CompanySerializer
 from company.models import Company
-from django_filters import rest_framework as filters
 
 
 class StockDetailSerializer(serializers.ModelSerializer):
@@ -13,12 +12,3 @@ class StockDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = StockDetail
         fields = '__all__'
-
-
-class PriceFilter(filters.FilterSet):
-    class Meta:
-        model = StockDetail
-        fields = {
-            'company': ['exact'],
-            'date_time': ['lt', 'gt'],
-        }

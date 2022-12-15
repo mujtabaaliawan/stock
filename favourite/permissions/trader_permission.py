@@ -12,11 +12,7 @@ class IsTraderUpdate(BasePermission):
         return request.user.id == trader_user_id
 
 
-class IsTraderCreate(BasePermission):
+class IsTrader(BasePermission):
 
     def has_permission(self, request, view):
-        if request.method == "POST":
-            trader_id = request.data["trader_id"]
-            trader = Trader.objects.get(id=trader_id)
-            return request.user.id == trader.user.id
-        return True
+        return request.user.role == "trader"
