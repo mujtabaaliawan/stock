@@ -1,4 +1,4 @@
-from rest_framework.test import APITestCase
+from rest_framework.test import APITransactionTestCase
 from rest_framework import status
 from django.urls import reverse
 from transaction.test.factories import TraderFactory
@@ -6,7 +6,7 @@ import json
 from rest_framework.test import RequestsClient
 
 
-class TestTransaction(APITestCase):
+class TestTransaction(APITransactionTestCase):
 
     def user_login(self, email, password):
         token_data = {
@@ -49,8 +49,7 @@ class TestTransaction(APITestCase):
         test_data = {
             "nature": "purchase",
             "volume_transacted": 100,
-            "stock_detail_id": stock_detail_id,
-            "trader_id": self.trader.id
+            "stock_detail_id": stock_detail_id
         }
 
         path = reverse("transaction_list_new")
@@ -62,8 +61,7 @@ class TestTransaction(APITestCase):
         test_data = {
             "nature": "purchase",
             "volume_transacted": 100.0,
-            "stock_detail_id": stock_detail_id,
-            "trader_id": self.trader.id
+            "stock_detail_id": stock_detail_id
         }
 
         self.user_login(email=self.trader.user.email, password='trader')
@@ -73,8 +71,7 @@ class TestTransaction(APITestCase):
         test_data = {
             "nature": "sale",
             "volume_transacted": 50,
-            "stock_detail_id": stock_detail_id,
-            "trader_id": self.trader.id
+            "stock_detail_id": stock_detail_id
         }
 
         self.user_login(email=self.trader.user.email, password='trader')
@@ -84,8 +81,7 @@ class TestTransaction(APITestCase):
         test_data = {
             "nature": "sale",
             "volume_transacted": 200,
-            "stock_detail_id": stock_detail_id,
-            "trader_id": self.trader.id
+            "stock_detail_id": stock_detail_id
         }
 
         self.user_login(email=self.trader.user.email, password='trader')
@@ -95,8 +91,7 @@ class TestTransaction(APITestCase):
         test_data = {
             "nature": "sale",
             "volume_transacted": 150,
-            "stock_detail_id": stock_detail_id,
-            "trader_id": self.trader.id
+            "stock_detail_id": stock_detail_id
         }
 
         self.user_login(email=self.trader.user.email, password='trader')

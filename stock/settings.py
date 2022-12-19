@@ -31,9 +31,21 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-    'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
-    'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles', 'rest_framework',
-    'category', 'company', 'stock_detail', 'user', 'trader', 'transaction', 'favourite', 'django_filters',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+    'category',
+    'company',
+    'stock_detail',
+    'user',
+    'trader',
+    'transaction',
+    'favourite',
+    'django_filters',
     'django_q', ]
 
 AUTH_USER_MODEL = env('USER_MODEL')
@@ -69,17 +81,21 @@ TEMPLATES = [
 WSGI_APPLICATION = env('WSGI_APPLICATION')
 
 DATABASES = {
-    'default': {
-        'ENGINE': env('DATABASE_ENGINE'),
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST': env('DATABASE_HOST'),
-        'PORT': env('DATABASE_PORT'),
-        'TEST': {
-            'NAME': env('DATABASE_TEST_NAME'),
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
-    }
+    # 'default': {
+    #     'ENGINE': env('DATABASE_ENGINE'),
+    #     'NAME': env('DATABASE_NAME'),
+    #     'USER': env('DATABASE_USER'),
+    #     'PASSWORD': env('DATABASE_PASSWORD'),
+    #     'HOST': env('DATABASE_HOST'),
+    #     'PORT': env('DATABASE_PORT'),
+    #     'TEST': {
+    #         'NAME': env('DATABASE_TEST_NAME'),
+    #     }
+    # }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -118,17 +134,18 @@ ALLOWED_TOKENS = ({"market": env("TOKEN_MARKET"), "name": env("TOKEN_NAME1"), "c
                     "city": env("TOKEN_CITY"), "iat": int(env("TOKEN_IAT"))})
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ),
-    #
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
-    #     'rest_framework.authentication.BasicAuthentication',
-    # ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
     'DATETIME_FORMAT': "%Y-%m-%d %H:%M:%S",
     'USE_TZ': False,
 }
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')

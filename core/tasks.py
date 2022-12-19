@@ -21,5 +21,5 @@ def dataupdate(market_data):
         serializer.is_valid()
         serializer.save()
 
-        # mail_favourite()
+    mail_favourite()
 

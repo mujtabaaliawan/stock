@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from core.authentications.sender_authentication import SenderAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from django_q.tasks import async_task
+# from django_q.tasks import async_task
 from core.tasks import dataupdate
 
 
@@ -15,5 +15,6 @@ class DataUpdater(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        async_task(dataupdate, request.data)
+        dataupdate(request.data)
+        # async_task(dataupdate, request.data)
         return Response(status=status.HTTP_200_OK)

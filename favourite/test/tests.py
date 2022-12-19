@@ -1,12 +1,21 @@
-from rest_framework.test import APITestCase
+from rest_framework.test import APITransactionTestCase, APITestCase
 from rest_framework import status
 from django.urls import reverse
 from favourite.test.factories import TraderFactory
 import json
 from rest_framework.test import RequestsClient
+from rest_framework.response import Response
+from unittest import mock
+from core.views import views
 
 
-class TestFavourite(APITestCase):
+class TestFavourite(APITransactionTestCase):
+
+    # @mock.patch('core.views.views.mail_favourite')
+    # def mail_mock(self, mock_mail_favourite):
+    #     print("Yes i am running")
+    #     mock_mail_favourite.return_value = Response(status.HTTP_200_OK)
+
 
     def user_login(self, email, password):
         token_data = {
@@ -32,7 +41,6 @@ class TestFavourite(APITestCase):
         ]
         self.trader = TraderFactory.create()
         self.user_login(email=self.trader.user.email, password='trader')
-
         client = RequestsClient()
         client.headers.update({"Secret-Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYXJrZXQiOiJzdG9jayIsIm5hbWUiOiJqYW5nb19yYW5nbyIsImNpdHkiOiJrYXJhY2hpIiwiaWF0IjoxNTE2MjM5MDIyfQ.-9ijMMtccWA_0NhGfDIPsJWYUYOJuKtE9P7U6-iovDI"})
         response = client.post(path, json=data)
@@ -50,10 +58,9 @@ class TestFavourite(APITestCase):
 
         test_data = {
             "company_id": company_id,
-            "trader_id": self.trader.id,
             "monitor_field": "current",
             "minimum_limit": 220.0,
-            "maximum_limit": 225.3,
+            "maximum_limit": 230.3,
             "is_active": True
         }
 
@@ -75,7 +82,6 @@ class TestFavourite(APITestCase):
 
         test_data = {
             "company_id": company_id,
-            "trader_id": self.trader.id,
             "monitor_field": "current",
             "minimum_limit": 220.0,
             "maximum_limit": 225.3,
@@ -94,7 +100,6 @@ class TestFavourite(APITestCase):
         fav_data = json.loads(response.content)
 
         self.assertEqual(fav_data[0]["company"]["id"], test_data["company_id"])
-        self.assertEqual(fav_data[0]["trader"]["id"], test_data["trader_id"])
         self.assertEqual(fav_data[0]["monitor_field"], test_data["monitor_field"])
         self.assertEqual(fav_data[0]["minimum_limit"], test_data["minimum_limit"])
         self.assertEqual(fav_data[0]["maximum_limit"], test_data["maximum_limit"])
@@ -113,7 +118,6 @@ class TestFavourite(APITestCase):
 
         test_data = {
             "company_id": company_id,
-            "trader_id": self.trader.id,
             "monitor_field": "current",
             "minimum_limit": 220.0,
             "maximum_limit": 225.3,
@@ -143,3 +147,4 @@ class TestFavourite(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertEqual(response.data["is_active"], update_data["is_active"])
+
