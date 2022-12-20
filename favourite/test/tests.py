@@ -6,7 +6,7 @@ import json
 from rest_framework.test import RequestsClient
 from rest_framework.response import Response
 from unittest import mock
-from core.tasks import dataupdate
+from django.core import mail
 
 
 def mail_mock():
@@ -15,18 +15,6 @@ def mail_mock():
 
 
 class TestFavourite(APITransactionTestCase):
-
-    @mock.patch('core.tasks.mail_favourite', mail_mock)
-    def test_mail_send(self):
-        market_data = [
-            {"category": "AUTOMOBILE ASSEMBLER", "company": "Hino Pak Motor Limited.", "ldcp": 245.5, "open": 228.02,
-             "high": 228.02, "low": 227.1, "current": 227.1, "change": -18.4, "volume": 400.0,
-             "date_time": "2022-12-08 11:59:05"},
-            {"category": "AUTOMOBILE ASSEMBLER", "company": "Honda Atlas Cars (Pak) Ltd.", "ldcp": 150.08,
-             "open": 146.5, "high": 150.15, "low": 146.5, "current": 148.0, "change": -2.08, "volume": 28449.0,
-             "date_time": "2022-12-08 11:59:05"}]
-        dataupdate(market_data)
-
 
     def user_login(self, email, password):
         token_data = {
@@ -71,7 +59,7 @@ class TestFavourite(APITransactionTestCase):
             "company_id": company_id,
             "monitor_field": "current",
             "minimum_limit": 220.0,
-            "maximum_limit": 230.3,
+            "maximum_limit": 225.3,
             "is_active": True
         }
 
@@ -158,4 +146,41 @@ class TestFavourite(APITransactionTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertEqual(response.data["is_active"], update_data["is_active"])
+
+    @mock.patch('core.tasks.mail_favourite', mail_mock)
+    def test_mail_send(self):
+        market_data = [
+            {"category": "AUTOMOBILE ASSEMBLER", "company": "Hino Pak Motor Limited.", "ldcp": 245.5, "open": 228.02,
+             "high": 228.02, "low": 227.1, "current": 227.1, "change": -18.4, "volume": 400.0,
+             "date_time": "2022-12-08 11:59:05"},
+            {"category": "AUTOMOBILE ASSEMBLER", "company": "Honda Atlas Cars (Pak) Ltd.", "ldcp": 150.08,
+             "open": 146.5, "high": 150.15, "low": 146.5, "current": 148.0, "change": -2.08, "volume": 28449.0,
+             "date_time": "2022-12-08 11:59:05"}]
+        self.trader = TraderFactory.create()
+        self.user_login(email=self.trader.user.email, password='trader')
+        client = RequestsClient()
+        client.headers.update({"Secret-Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYXJrZXQiOiJzdG9jayIsIm5hbWUiOiJqYW5nb19yYW5nbyIsImNpdHkiOiJrYXJhY2hpIiwiaWF0IjoxNTE2MjM5MDIyfQ.-9ijMMtccWA_0NhGfDIPsJWYUYOJuKtE9P7U6-iovDI"})
+        path = "http://127.0.0.1:8000/handler"
+        response = client.post(path, json=market_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_mail_content(self):
+        self.test_create_favourite()
+
+        market_data = [
+            {"category": "AUTOMOBILE ASSEMBLER", "company": "Hino Pak Motor Limited.", "ldcp": 245.5, "open": 228.02,
+             "high": 228.02, "low": 227.1, "current": 230.1, "change": -18.4, "volume": 400.0,
+             "date_time": "2022-12-08 11:59:05"},
+            {"category": "AUTOMOBILE ASSEMBLER", "company": "Honda Atlas Cars (Pak) Ltd.", "ldcp": 150.08,
+             "open": 146.5, "high": 150.15, "low": 146.5, "current": 148.0, "change": -2.08, "volume": 28449.0,
+             "date_time": "2022-12-08 11:59:05"}]
+
+        self.user_login(email=self.trader.user.email, password='trader')
+        client = RequestsClient()
+        client.headers.update({"Secret-Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYXJrZXQiOiJzdG9jayIsIm5hbWUiOiJqYW5nb19yYW5nbyIsImNpdHkiOiJrYXJhY2hpIiwiaWF0IjoxNTE2MjM5MDIyfQ.-9ijMMtccWA_0NhGfDIPsJWYUYOJuKtE9P7U6-iovDI"})
+        path = "http://127.0.0.1:8000/handler"
+        response = client.post(path, json=market_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(mail.outbox[0].subject, "Market Favourite Company Price Alert")
+        self.assertEqual(mail.outbox[0].body, "Favourite Company Hino Pak Motor Limited. has reached maximum limit, new value is 230.1")
 
