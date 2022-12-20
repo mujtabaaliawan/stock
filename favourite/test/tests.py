@@ -6,15 +6,26 @@ import json
 from rest_framework.test import RequestsClient
 from rest_framework.response import Response
 from unittest import mock
-from core.views import views
+from core.tasks import dataupdate
+
+
+def mail_mock():
+    print("Mock mails sent")
+    return Response(status.HTTP_200_OK)
 
 
 class TestFavourite(APITransactionTestCase):
 
-    # @mock.patch('core.views.views.mail_favourite')
-    # def mail_mock(self, mock_mail_favourite):
-    #     print("Yes i am running")
-    #     mock_mail_favourite.return_value = Response(status.HTTP_200_OK)
+    @mock.patch('core.tasks.mail_favourite', mail_mock)
+    def test_mail_send(self):
+        market_data = [
+            {"category": "AUTOMOBILE ASSEMBLER", "company": "Hino Pak Motor Limited.", "ldcp": 245.5, "open": 228.02,
+             "high": 228.02, "low": 227.1, "current": 227.1, "change": -18.4, "volume": 400.0,
+             "date_time": "2022-12-08 11:59:05"},
+            {"category": "AUTOMOBILE ASSEMBLER", "company": "Honda Atlas Cars (Pak) Ltd.", "ldcp": 150.08,
+             "open": 146.5, "high": 150.15, "low": 146.5, "current": 148.0, "change": -2.08, "volume": 28449.0,
+             "date_time": "2022-12-08 11:59:05"}]
+        dataupdate(market_data)
 
 
     def user_login(self, email, password):

@@ -22,4 +22,3 @@ def dataupdate(market_data):
         serializer.save()
 
     mail_favourite()
-
